@@ -7,71 +7,54 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body {
-            background: #0f172a;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .gold-gradient {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-        }
-        .gold-border {
-            border: 1px solid rgba(251, 191, 36, 0.5);
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
-        }
-        .shimmer {
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
+        body { background: #0f172a; color: white; font-family: sans-serif; }
+        .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
+        .gold-border { border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
+        .animate-shimmer { animation: shimmer 2s infinite; }
+        @keyframes shimmer { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md bg-[#1e293b] rounded-3xl p-8 gold-border relative overflow-hidden">
+    <div class="w-full max-w-md bg-[#1e293b] rounded-3xl p-8 gold-border relative">
         <div class="text-center mb-10">
             <div class="inline-block p-4 rounded-full bg-yellow-500/10 mb-4">
-                <i class="fa-solid fa-crown text-4xl text-yellow-500 shimmer"></i>
+                <i class="fa-solid fa-crown text-4xl text-yellow-500 animate-shimmer"></i>
             </div>
-            <h1 class="text-3xl font-extrabold tracking-tight text-white">LOCKET <span class="text-yellow-500">GOLD</span></h1>
-            <p class="text-gray-400 text-sm mt-2">Hệ thống mở khóa độc quyền bởi ZDNAM</p>
+            <h1 class="text-3xl font-extrabold text-white">LOCKET <span class="text-yellow-500">GOLD</span></h1>
+            <p class="text-gray-400 text-sm mt-2 font-medium">Hệ thống mở khóa độc quyền bởi ZDNAM</p>
         </div>
 
         <div class="space-y-6">
             <div class="relative">
-                <label class="text-xs font-semibold text-yellow-500 uppercase tracking-widest ml-1">Username Locket</label>
+                <label class="text-xs font-bold text-yellow-500 uppercase tracking-widest ml-1">Username Locket</label>
                 <div class="relative mt-2">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
-                        <i class="fa-solid fa-at"></i>
-                    </span>
-                    <input type="text" id="userInput" 
-                        class="block w-full pl-10 pr-3 py-4 bg-[#0f172a] border border-gray-700 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all" 
-                        placeholder="Nhập id tài khoản...">
+                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500"><i class="fa-solid fa-at"></i></span>
+                    <input type="text" id="userInput" class="block w-full pl-11 pr-4 py-4 bg-[#0f172a] border border-gray-700 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all" placeholder="Nhập ID tài khoản...">
                 </div>
             </div>
 
-            <button onclick="handleProcess()" id="btnAction" 
-                class="w-full gold-gradient text-[#0f172a] font-bold py-4 rounded-2xl shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/40 transition-all active:scale-95 uppercase tracking-wider">
+            <button onclick="handleProcess()" id="btnAction" class="w-full gold-gradient text-[#0f172a] font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all uppercase tracking-widest">
                 Bắt đầu kiểm tra
             </button>
 
-            <div id="statusArea" class="hidden space-y-4 animate-fade-in">
-                <div class="flex items-center justify-center space-x-3 p-4 bg-[#0f172a] rounded-2xl border border-gray-800">
-                    <div id="spinner" class="animate-spin rounded-full h-5 w-5 border-2 border-yellow-500 border-t-transparent"></div>
-                    <span id="statusMsg" class="text-sm text-gray-300">Đang khởi tạo kết nối...</span>
+            <div id="statusArea" class="hidden space-y-4">
+                <div class="flex flex-col items-center justify-center p-6 bg-[#0f172a] rounded-2xl border border-gray-800">
+                    <div id="spinner" class="animate-spin rounded-full h-10 w-10 border-4 border-yellow-500 border-t-transparent mb-4"></div>
+                    <span id="statusMsg" class="text-sm text-gray-300 font-medium text-center">Đang khởi tạo kết nối an toàn...</span>
+                    
+                    <div id="contactSection" class="hidden mt-4 w-full">
+                        <a href="https://zalo.me/0964121544" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-[#0068ff] text-white py-3 rounded-xl font-bold hover:bg-[#0056d2] transition-colors">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            <span>NHẮN TIN ZALO HỖ TRỢ</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="mt-10 pt-6 border-t border-gray-800 text-center">
-            <div class="flex justify-center space-x-4 mb-4">
-                <a href="#" class="text-gray-500 hover:text-yellow-500 transition-colors"><i class="fa-brands fa-facebook text-xl"></i></a>
-                <a href="#" class="text-gray-500 hover:text-yellow-500 transition-colors"><i class="fa-brands fa-telegram text-xl"></i></a>
-            </div>
-            <p class="text-[10px] text-gray-600 uppercase tracking-widest">© 2026 ZDNAM Digital Service</p>
+            <p class="text-[10px] text-gray-600 uppercase tracking-[0.2em]">© 2026 ZDNAM DIGITAL SERVICE</p>
         </div>
     </div>
 
@@ -81,51 +64,43 @@
             const btn = document.getElementById('btnAction');
             const statusArea = document.getElementById('statusArea');
             const statusMsg = document.getElementById('statusMsg');
-            const spinner = document.getElementById('spinner');
 
-            if (input.value.trim() === "") {
-                alert("Vui lòng nhập Username để tiếp tục!");
+            if (!input.value.trim()) {
+                alert("Bạn chưa nhập ID Locket!");
                 return;
             }
 
-            // Lock UI
             btn.disabled = true;
             btn.classList.add('opacity-50');
             statusArea.classList.remove('hidden');
 
-            // Giả lập các bước xử lý chuyên nghiệp
             const steps = [
-                "Đang kết nối API Locket...",
-                `Đang truy vấn ID: ${input.value}...`,
-                "Xác thực gói Gold v3.0...",
-                "Đang kiểm tra lỗ hổng bảo mật...",
-                "Đang thiết lập Proxy an toàn..."
+                "Đang truy vấn dữ liệu ID...",
+                "Đang kiểm tra gói Gold VIP...",
+                "Đang thiết lập cổng Proxy...",
+                "Đang đồng bộ hóa dữ liệu..."
             ];
 
-            let stepIdx = 0;
-            const interval = setInterval(() => {
-                if (stepIdx < steps.length) {
-                    statusMsg.innerText = steps[stepIdx];
-                    stepIdx++;
+            let i = 0;
+            const timer = setInterval(() => {
+                if (i < steps.length) {
+                    statusMsg.innerText = steps[i];
+                    i++;
                 } else {
-                    clearInterval(interval);
-                    showFinalStatus();
+                    clearInterval(timer);
+                    finish();
                 }
-            }, 1200);
+            }, 1000);
         }
 
-        function showFinalStatus() {
-            const statusMsg = document.getElementById('statusMsg');
-            const spinner = document.getElementById('spinner');
-            
-            spinner.classList.add('hidden');
-            statusMsg.parentElement.classList.add('border-yellow-500/50', 'bg-yellow-500/5');
-            statusMsg.innerHTML = `
-                <div class="text-center w-full py-2">
-                    <i class="fa-solid fa-circle-exclamation text-yellow-500 text-2xl mb-2"></i>
-                    <p class="text-white font-bold mb-1">HỆ THỐNG ĐANG BẢO TRÌ</p>
-                    <p class="text-xs text-gray-400">Vui lòng liên hệ <span class="text-yellow-500 font-bold">ZDNAM</span> để nhận hỗ trợ trực tiếp!</p>
-                </div>
+        function finish() {
+            document.getElementById('spinner').classList.add('hidden');
+            document.getElementById('contactSection').classList.remove('hidden');
+            const msg = document.getElementById('statusMsg');
+            msg.innerHTML = `
+                <i class="fa-solid fa-triangle-exclamation text-yellow-500 text-3xl mb-2"></i><br>
+                <span class="text-white font-bold text-lg">HỆ THỐNG ĐANG BẢO TRÌ</span><br>
+                Vui lòng liên hệ <span class="text-yellow-500">ZDNAM</span> để được kích hoạt thủ công!
             `;
         }
     </script>
