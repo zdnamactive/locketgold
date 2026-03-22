@@ -9,46 +9,46 @@
     <style>
         body {
             background: #0b0f1a;
-            color: white;
-            font-family: sans-serif;
-            overflow: hidden;
             margin: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-        }
-
-        /* Container bọc ngoài */
-        .wrapper {
-            width: 420px;
-            height: 600px;
-            background: #1e1e2e;
-            border-radius: 30px;
-            border: 1px solid rgba(251, 191, 36, 0.4);
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
-            position: relative;
             overflow: hidden;
         }
 
-        /* Iframe căn góc chính xác như bạn đã làm */
+        /* Khung chứa chính */
+        .wrapper {
+            width: 450px; /* Tăng nhẹ chiều rộng khung */
+            height: 700px; /* Tăng chiều cao để khớp với tỉ lệ phóng to */
+            background: #1e1e2e;
+            border-radius: 35px;
+            border: 2px solid rgba(251, 191, 36, 0.5);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+            /* Phóng to toàn bộ giao diện tại đây */
+            transform: scale(1.15); 
+        }
+
+        /* Iframe chứa web gốc */
         iframe {
-            width: 500px; /* Độ rộng Iframe */
-            height: 900px; /* Độ cao Iframe */
+            width: 600px; /* Tăng chiều rộng bên trong để không bị hụt */
+            height: 1000px;
             position: absolute;
-            top: -140px; /* Căn lề trên để che header */
-            left: -40px; /* Căn lề trái để che sidebar/phần thừa */
+            top: -135px; /* Giữ nguyên góc căn của bạn */
+            left: -75px; /* Điều chỉnh lại để căn giữa nội dung sau khi phóng to */
             border: none;
         }
 
-        /* Vùng nút Zalo nổi đè lên Iframe */
+        /* Khu vực nút Zalo */
         .footer-cta {
             position: absolute;
-            bottom: 25px;
+            bottom: 30px;
             left: 50%;
             transform: translateX(-50%);
             width: 85%;
-            z-index: 10;
+            z-index: 20;
         }
 
         .btn-zalo {
@@ -58,19 +58,30 @@
             width: 100%;
             background: #0068ff;
             color: white;
-            font-weight: bold;
+            font-weight: 900;
             text-transform: uppercase;
-            font-size: 13px;
-            padding: 16px;
+            font-size: 14px;
+            padding: 18px;
             border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 104, 255, 0.4);
+            text-decoration: none;
             transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 104, 255, 0.3);
         }
 
         .btn-zalo:hover {
+            transform: scale(1.05);
             background: #0056d2;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 104, 255, 0.5);
+        }
+
+        /* Thêm hiệu ứng phát sáng cho viền Gold */
+        .wrapper::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 35px;
+            border: 1px solid gold;
+            opacity: 0.3;
+            pointer-events: none;
         }
     </style>
 </head>
