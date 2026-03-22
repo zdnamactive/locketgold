@@ -7,49 +7,108 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #0b0f1a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .gold-border { border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); }
-        /* Ẩn các phần thừa của web gốc để trông như web của bạn */
-        .iframe-container {
-            width: 100%;
-            height: 500px;
-            overflow: hidden;
-            position: relative;
-            border-radius: 20px;
-        }
-        iframe {
-            width: 100%;
-            height: 800px;
-            position: absolute;
-            top: -150px; /* Căn chỉnh để ẩn header của trang gốc */
-            left: 0;
-            border: none;
-        }
+        body { background: #0b0f1a; color: white; font-family: 'Inter', sans-serif; }
+        .gold-glow { border: 1px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 25px rgba(251, 191, 36, 0.1); }
+        .btn-gold { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); transition: 0.3s; }
+        .btn-gold:hover { transform: scale(1.02); shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md bg-[#161b2b] rounded-3xl p-6 gold-border relative">
-        <div class="text-center mb-4">
-            <h1 class="text-xl font-black text-white uppercase tracking-tighter">
-                <i class="fa-solid fa-crown text-yellow-500 mr-2"></i>ZDNAM <span class="text-yellow-500">GOLD</span>
-            </h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Hệ thống đồng bộ dữ liệu Locket</p>
+    <div class="w-full max-w-md bg-[#161b2b] rounded-3xl p-8 gold-glow relative">
+        <div class="text-center mb-8">
+            <div class="bg-yellow-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-crown text-3xl text-yellow-500"></i>
+            </div>
+            <h1 class="text-2xl font-black text-white uppercase tracking-tighter">ZDNAM <span class="text-yellow-500">LOCKET GOLD</span></h1>
+            <p class="text-gray-400 text-[10px] uppercase tracking-widest mt-1 font-bold text-center">Hệ thống Check Data Real-time</p>
         </div>
 
-        <div class="iframe-container">
-            <iframe src="https://tienich.space/locket2.php" scrolling="no"></iframe>
+        <div id="searchSection" class="space-y-5">
+            <div>
+                <label class="text-[11px] font-bold text-yellow-500 uppercase ml-1"><i class="fa-solid fa-at mr-1"></i> Username Locket</label>
+                <input type="text" id="username" class="w-full mt-2 bg-[#0b0f1a] border border-gray-800 rounded-2xl py-4 px-5 text-white focus:outline-none focus:border-yellow-500 transition-all font-medium" placeholder="Ví dụ: zdnam.active">
+            </div>
+            <button onclick="startCheck()" class="w-full btn-gold text-black font-black py-4 rounded-2xl uppercase text-xs tracking-[0.1em]">
+                Bắt đầu kiểm tra
+            </button>
         </div>
 
-        <div class="mt-4">
-            <a href="https://zalo.me/0964121544" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-[#0068ff] text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-transform">
-                <i class="fa-solid fa-headset"></i>
-                <span>LIÊN HỆ ADMIN ĐỂ KÍCH HOẠT</span>
-            </a>
+        <div id="resultSection" class="hidden space-y-6">
+            <div id="loading" class="text-center py-6">
+                <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-500 mx-auto"></div>
+                <p class="mt-4 text-sm text-gray-400 font-medium animate-pulse">Đang truy vấn Server Locket...</p>
+            </div>
+
+            <div id="profileData" class="hidden text-center animate-in fade-in zoom-in duration-500">
+                <div class="relative inline-block">
+                    <img id="userImg" class="w-28 h-28 rounded-full border-4 border-yellow-500 mx-auto object-cover shadow-2xl" src="" alt="Avatar">
+                    <div class="absolute top-0 right-0 bg-yellow-500 text-[#161b2b] px-2 py-1 rounded-md text-[8px] font-bold uppercase shadow-lg">Premium</div>
+                </div>
+                <h2 id="userFullname" class="text-2xl font-bold mt-4 text-white"></h2>
+                <p id="userAtName" class="text-yellow-500 text-sm font-semibold italic"></p>
+
+                <div class="mt-6 p-4 bg-yellow-500/5 border border-yellow-500/20 rounded-2xl">
+                    <p class="text-gray-300 text-xs leading-relaxed">Tài khoản này đã đủ điều kiện nâng cấp gói <span class="text-yellow-500 font-bold underline">LOCKET GOLD VIP</span> vĩnh viễn.</p>
+                </div>
+
+                <a href="https://zalo.me/0964121544" target="_blank" class="block w-full bg-[#0068ff] text-white font-bold py-4 rounded-2xl mt-6 shadow-lg shadow-blue-500/20 hover:bg-blue-600">
+                    <i class="fa-solid fa-bolt mr-2"></i> KÍCH HOẠT NGAY QUA ZALO
+                </a>
+            </div>
         </div>
 
-        <p class="text-center text-[8px] text-gray-700 mt-4 uppercase tracking-widest">© 2026 ZDNAM DIGITAL SERVICE</p>
+        <p class="text-center text-[9px] text-gray-600 mt-10 uppercase tracking-[0.3em] font-medium italic">© 2026 ZDNAM DIGITAL SERVICE</p>
     </div>
 
+    <script>
+        async function startCheck() {
+            const user = document.getElementById('username').value.trim();
+            if (!user) return alert("Vui lòng nhập Username Locket!");
+
+            document.getElementById('searchSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+
+            try {
+                // Sử dụng Proxy mạnh để bóc tách dữ liệu từ tienich.space
+                const proxy = "https://api.allorigins.win/get?url=";
+                const target = encodeURIComponent(`https://tienich.space/locket2.php?user=${user}`);
+                
+                const response = await fetch(proxy + target);
+                const data = await response.json();
+                
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, 'text/html');
+                
+                // Lấy ảnh và tên thật của khách hàng
+                const avatar = doc.querySelector('img[src*="locket"]');
+                const name = doc.querySelector('h2, h3, b');
+
+                if (!avatar) throw new Error("User not found");
+
+                setTimeout(() => {
+                    document.getElementById('loading').classList.add('hidden');
+                    document.getElementById('profileData').classList.remove('hidden');
+                    
+                    document.getElementById('userImg').src = avatar.src;
+                    document.getElementById('userFullname').innerText = name ? name.innerText : "Thành viên Locket";
+                    document.getElementById('userAtName').innerText = "@" + user;
+                }, 2000);
+
+            } catch (err) {
+                // Nếu lỗi, vẫn hiện giao diện chuyên nghiệp để dẫn khách về Zalo
+                setTimeout(() => {
+                    document.getElementById('loading').innerHTML = `
+                        <div class="p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                            <i class="fa-solid fa-triangle-exclamation text-red-500 text-4xl mb-4"></i>
+                            <p class="text-white font-bold text-sm uppercase">Lỗi Đồng Bộ Hóa</p>
+                            <p class="text-gray-400 text-xs mt-2 px-2">ID không tồn tại hoặc hệ thống Locket đang chặn truy cập tự động.</p>
+                            <a href="https://zalo.me/0964121544" class="block mt-6 bg-[#0068ff] py-4 rounded-2xl font-bold text-xs">LIÊN HỆ ADMIN KIỂM TRA TAY</a>
+                        </div>
+                    `;
+                }, 2000);
+            }
+        }
+    </script>
 </body>
 </html>
