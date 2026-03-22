@@ -7,102 +7,49 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #0b0f1a; color: white; font-family: 'Inter', sans-serif; }
-        .gold-glow { border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
-        .btn-gold { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
+        body { background: #0b0f1a; color: white; font-family: 'Inter', sans-serif; overflow: hidden; }
+        .gold-border { border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); }
+        /* Ẩn các phần thừa của web gốc để trông như web của bạn */
+        .iframe-container {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 20px;
+        }
+        iframe {
+            width: 100%;
+            height: 800px;
+            position: absolute;
+            top: -150px; /* Căn chỉnh để ẩn header của trang gốc */
+            left: 0;
+            border: none;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md bg-[#161b2b] rounded-3xl p-8 gold-glow relative">
-        <div class="text-center mb-8">
-            <div class="bg-yellow-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fa-solid fa-crown text-3xl text-yellow-500"></i>
-            </div>
-            <h1 class="text-2xl font-black text-white">ZDNAM <span class="text-yellow-500">GOLD</span></h1>
-            <p class="text-gray-400 text-[10px] uppercase tracking-[0.2em] mt-1">Hệ thống đồng bộ dữ liệu thực</p>
+    <div class="w-full max-w-md bg-[#161b2b] rounded-3xl p-6 gold-border relative">
+        <div class="text-center mb-4">
+            <h1 class="text-xl font-black text-white uppercase tracking-tighter">
+                <i class="fa-solid fa-crown text-yellow-500 mr-2"></i>ZDNAM <span class="text-yellow-500">GOLD</span>
+            </h1>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest">Hệ thống đồng bộ dữ liệu Locket</p>
         </div>
 
-        <div id="searchBox" class="space-y-5">
-            <div>
-                <label class="text-[10px] font-bold text-yellow-500 uppercase ml-1">Username Locket</label>
-                <input type="text" id="targetUser" class="w-full mt-2 bg-[#0b0f1a] border border-gray-800 rounded-2xl py-4 px-5 text-white focus:outline-none focus:border-yellow-500 transition-all" placeholder="Nhập ID tài khoản...">
-            </div>
-            <button onclick="fetchData()" id="btnAction" class="w-full btn-gold text-black font-bold py-4 rounded-2xl uppercase text-xs tracking-widest shadow-lg shadow-yellow-500/20">
-                Tìm kiếm tài khoản
-            </button>
+        <div class="iframe-container">
+            <iframe src="https://tienich.space/locket2.php" scrolling="no"></iframe>
         </div>
 
-        <div id="resultBox" class="hidden text-center space-y-5">
-            <div id="loading" class="py-10">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-500 mx-auto mb-3"></div>
-                <p class="text-gray-400 text-sm">Đang kết nối Server Locket...</p>
-            </div>
-
-            <div id="userData" class="hidden animate-in fade-in duration-500">
-                <img id="avatar" class="w-24 h-24 rounded-full border-4 border-yellow-500 mx-auto object-cover mb-4" src="" alt="Avatar">
-                <h2 id="fullName" class="text-xl font-bold text-white"></h2>
-                <p id="userName" class="text-yellow-500 text-sm font-mono"></p>
-                
-                <div class="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
-                    <p class="text-red-500 text-[11px] font-bold uppercase italic">Cảnh báo: Tài khoản chưa đăng ký Gold</p>
-                </div>
-
-                <a href="https://zalo.me/0964121544" target="_blank" class="block w-full bg-[#0068ff] text-white font-bold py-4 rounded-2xl mt-6">
-                    <i class="fa-solid fa-comment-dots mr-2"></i> LIÊN HỆ ZDNAM ĐỂ MUA
-                </a>
-            </div>
+        <div class="mt-4">
+            <a href="https://zalo.me/0964121544" target="_blank" class="flex items-center justify-center space-x-2 w-full bg-[#0068ff] text-white py-4 rounded-2xl font-bold shadow-lg shadow-blue-500/20 hover:scale-[1.02] transition-transform">
+                <i class="fa-solid fa-headset"></i>
+                <span>LIÊN HỆ ADMIN ĐỂ KÍCH HOẠT</span>
+            </a>
         </div>
 
-        <p class="text-center text-[9px] text-gray-600 mt-10 uppercase tracking-widest">© 2026 ZDNAM Service</p>
+        <p class="text-center text-[8px] text-gray-700 mt-4 uppercase tracking-widest">© 2026 ZDNAM DIGITAL SERVICE</p>
     </div>
 
-    <script>
-        async function fetchData() {
-            const user = document.getElementById('targetUser').value.trim();
-            if (!user) return alert("Vui lòng nhập ID!");
-
-            document.getElementById('searchBox').classList.add('hidden');
-            document.getElementById('resultBox').classList.remove('hidden');
-
-            try {
-                // Sử dụng Proxy mạnh mẽ hơn để vượt rào cản CORS
-                const proxy = "https://api.allorigins.win/get?url=";
-                const target = encodeURIComponent(`https://tienich.space/locket2.php?user=${user}`);
-                
-                const response = await fetch(proxy + target);
-                const data = await response.json();
-                
-                const parser = new DOMParser();
-                const htmlDoc = parser.parseFromString(data.contents, 'text/html');
-                
-                // Lấy ảnh và tên từ web gốc
-                const img = htmlDoc.querySelector('img[src*="locket"]');
-                const name = htmlDoc.querySelector('h2, h3, b');
-
-                if (!img) throw new Error("Not found");
-
-                // Hiển thị dữ liệu thật
-                setTimeout(() => {
-                    document.getElementById('loading').classList.add('hidden');
-                    document.getElementById('userData').classList.remove('hidden');
-                    document.getElementById('avatar').src = img.src;
-                    document.getElementById('fullName').innerText = name ? name.innerText : "Người dùng Locket";
-                    document.getElementById('userName').innerText = "@" + user;
-                }, 1500);
-
-            } catch (error) {
-                // Nếu lỗi, chuyển sang thông báo "Bảo trì" để giữ uy tín dịch vụ
-                setTimeout(() => {
-                    document.getElementById('loading').innerHTML = `
-                        <i class="fa-solid fa-triangle-exclamation text-yellow-500 text-4xl mb-4"></i>
-                        <p class="text-white font-bold">HỆ THỐNG ĐANG QUÁ TẢI</p>
-                        <p class="text-gray-400 text-xs mt-2 px-4">Server đồng bộ đang bảo trì. Vui lòng nhắn tin Zalo để Admin kiểm tra trực tiếp cho bạn!</p>
-                        <a href="https://zalo.me/0964121544" class="block mt-6 bg-[#0068ff] py-4 rounded-2xl font-bold text-sm">NHẮN ZALO NGAY</a>
-                    `;
-                }, 1500);
-            }
-        }
-    </script>
 </body>
 </html>
