@@ -7,107 +7,107 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background: #0f172a; color: white; font-family: sans-serif; }
-        .gold-gradient { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); }
-        .gold-border { border: 1px solid rgba(251, 191, 36, 0.4); box-shadow: 0 0 20px rgba(251, 191, 36, 0.1); }
+        body { background: #0b0f1a; color: white; font-family: 'Inter', sans-serif; }
+        .gold-glow { box-shadow: 0 0 20px rgba(251, 191, 36, 0.2); border: 1px solid rgba(251, 191, 36, 0.3); }
+        .btn-gold { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); transition: all 0.3s; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4); }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md bg-[#1e293b] rounded-3xl p-8 gold-border relative">
+    <div class="w-full max-w-md bg-[#161b2b] rounded-3xl p-8 gold-glow relative">
         <div class="text-center mb-8">
-            <div class="inline-block p-4 rounded-full bg-yellow-500/10 mb-4">
-                <i class="fa-solid fa-crown text-4xl text-yellow-500"></i>
+            <div class="bg-yellow-500/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-bolt-lightning text-3xl text-yellow-500"></i>
             </div>
-            <h1 class="text-3xl font-extrabold text-white">LOCKET <span class="text-yellow-500">GOLD</span></h1>
-            <p class="text-gray-400 text-sm mt-2">Hệ thống liên kết dữ liệu ZDNAM</p>
+            <h1 class="text-2xl font-black tracking-tighter text-white uppercase">ZDNAM <span class="text-yellow-500">Locket Gold</span></h1>
+            <p class="text-gray-400 text-xs mt-1 uppercase tracking-widest">Dữ liệu thời gian thực v3.0</p>
         </div>
 
-        <div class="space-y-6">
-            <div id="inputGroup">
-                <label class="text-xs font-bold text-yellow-500 uppercase tracking-widest ml-1">Username Locket</label>
-                <div class="relative mt-2">
-                    <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-gray-500"><i class="fa-solid fa-at"></i></span>
-                    <input type="text" id="userInput" class="block w-full pl-11 pr-4 py-4 bg-[#0f172a] border border-gray-700 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-yellow-500 transition-all" placeholder="Nhập ID tài khoản...">
-                </div>
-                <button onclick="handleSearch()" id="btnAction" class="w-full mt-4 gold-gradient text-[#0f172a] font-black py-4 rounded-2xl shadow-lg active:scale-95 transition-all uppercase tracking-widest">
-                    Tìm kiếm tài khoản
-                </button>
+        <div id="searchBox" class="space-y-5">
+            <div>
+                <label class="text-[10px] font-bold text-yellow-500 uppercase ml-1">Tên người dùng Locket</label>
+                <input type="text" id="targetUser" class="w-full mt-2 bg-[#0b0f1a] border border-gray-800 rounded-2xl py-4 px-5 text-white focus:outline-none focus:border-yellow-500 transition-all" placeholder="Ví dụ: zdnam.active">
+            </div>
+            <button onclick="fetchData()" id="btnAction" class="w-full btn-gold text-black font-bold py-4 rounded-2xl uppercase text-sm tracking-widest">
+                Tìm kiếm dữ liệu
+            </button>
+        </div>
+
+        <div id="resultBox" class="hidden text-center space-y-6 animate-pulse">
+            <div id="loadingStatus" class="flex flex-col items-center">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-yellow-500 mb-3"></div>
+                <p class="text-gray-400 text-sm" id="processText">Đang truy vấn Server...</p>
             </div>
 
-            <div id="resultArea" class="hidden space-y-4 text-center p-6 bg-[#0f172a] rounded-2xl border border-gray-800">
-                <div id="loader" class="animate-spin rounded-full h-10 w-10 border-4 border-yellow-500 border-t-transparent mx-auto mb-4"></div>
-                <div id="userInfo" class="hidden">
-                    <img id="userAvatar" class="w-24 h-24 rounded-full mx-auto border-2 border-yellow-500 mb-2" src="" alt="Avatar">
-                    <h3 id="displayName" class="text-xl font-bold text-white"></h3>
-                    <p id="userTag" class="text-yellow-500 text-sm mb-4"></p>
-                    <div class="p-3 bg-red-500/10 border border-red-500/50 rounded-xl text-red-500 text-xs font-bold mb-4">
-                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> TÀI KHOẢN CHƯA KÍCH HOẠT GOLD
-                    </div>
+            <div id="userData" class="hidden">
+                <div class="relative inline-block">
+                    <img id="avatar" class="w-24 h-24 rounded-full border-4 border-yellow-500 mx-auto object-cover" src="" alt="Avatar">
+                    <div class="absolute bottom-0 right-0 bg-green-500 w-6 h-6 rounded-full border-4 border-[#161b2b]"></div>
                 </div>
-                <p id="statusMsg" class="text-sm text-gray-300"></p>
-                <a id="zaloBtn" href="https://zalo.me/0964121544" target="_blank" class="hidden flex items-center justify-center space-x-2 w-full bg-[#0068ff] text-white py-4 rounded-2xl font-bold mt-4">
-                    <i class="fa-solid fa-comment-dots"></i>
-                    <span>LIÊN HỆ ADMIN ĐỂ MUA GOLD</span>
+                <h2 id="fullName" class="text-xl font-bold mt-4 text-white"></h2>
+                <p id="userName" class="text-yellow-500 text-sm"></p>
+                
+                <div class="mt-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl">
+                    <p class="text-red-500 text-xs font-bold uppercase tracking-tighter">Trạng thái: Chưa kích hoạt Gold</p>
+                </div>
+
+                <a href="https://zalo.me/0964121544" target="_blank" class="block w-full bg-[#0068ff] text-white font-bold py-4 rounded-2xl mt-6 hover:bg-[#0056d2] transition-all">
+                    <i class="fa-solid fa-comment-dots mr-2"></i> NHẮN ZALO ĐỂ MUA GOLD
                 </a>
             </div>
         </div>
+
+        <p class="text-center text-[9px] text-gray-600 mt-10 uppercase tracking-widest">Powered by ZDNAM Service</p>
     </div>
 
     <script>
-        async function handleSearch() {
-            const user = document.getElementById('userInput').value.trim();
-            if(!user) return alert("Nhập username!");
+        async function fetchData() {
+            const user = document.getElementById('targetUser').value.trim();
+            if (!user) return alert("Vui lòng nhập ID!");
 
-            document.getElementById('inputGroup').classList.add('hidden');
-            document.getElementById('resultArea').classList.remove('hidden');
-            const msg = document.getElementById('statusMsg');
-            msg.innerText = "Đang truy vấn dữ liệu từ server...";
+            // Giao diện lúc đang tìm
+            document.getElementById('searchBox').classList.add('hidden');
+            document.getElementById('resultBox').classList.remove('hidden');
+            const processText = document.getElementById('processText');
 
             try {
-                // Sử dụng Proxy để vượt rào cản CORS
-                const proxyUrl = "https://api.allorigins.win/get?url=";
-                const targetUrl = encodeURIComponent(`https://tienich.space/locket2.php?user=${user}`);
+                // Kỹ thuật Proxy để lấy dữ liệu ngầm từ tienich.space
+                const proxy = "https://api.allorigins.win/get?url=";
+                const target = encodeURIComponent(`https://tienich.space/locket2.php?user=${user}`);
                 
-                const response = await fetch(proxyUrl + targetUrl);
+                const response = await fetch(proxy + target);
                 const data = await response.json();
                 
-                // Phân tích HTML trả về để lấy thông tin (Đây là kỹ thuật web scraping)
+                // Đọc dữ liệu từ mã HTML của web gốc
                 const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, 'text/html');
+                const htmlDoc = parser.parseFromString(data.contents, 'text/html');
                 
-                // Tìm ảnh và tên (tùy thuộc vào cấu trúc web gốc)
-                const img = doc.querySelector('img'); 
-                const name = doc.querySelector('h2, h3, b') || {innerText: user};
+                // Lấy ảnh đại diện và tên từ các thẻ của web gốc
+                const imgTag = htmlDoc.querySelector('img[src*="locket"]');
+                const nameTag = htmlDoc.querySelector('h2, h3, b');
 
-                if (data.contents.includes("không tìm thấy") || data.contents.length < 500) {
-                    throw new Error("User không tồn tại");
-                }
+                if (!imgTag) throw new Error("Không tìm thấy");
 
                 // Hiển thị kết quả thật
                 setTimeout(() => {
-                    document.getElementById('loader').classList.add('hidden');
-                    document.getElementById('userInfo').classList.remove('hidden');
-                    document.getElementById('zaloBtn').classList.remove('hidden');
-                    document.getElementById('userAvatar').src = img ? img.src : "https://i.imgur.com/6VBx3io.png";
-                    document.getElementById('displayName').innerText = name.innerText;
-                    document.getElementById('userTag').innerText = "@" + user;
-                    msg.innerText = "Đã tìm thấy tài khoản!";
+                    document.getElementById('loadingStatus').classList.add('hidden');
+                    document.getElementById('userData').classList.remove('hidden');
+                    document.getElementById('resultBox').classList.remove('animate-pulse');
+                    
+                    document.getElementById('avatar').src = imgTag.src;
+                    document.getElementById('fullName').innerText = nameTag ? nameTag.innerText : "Người dùng Locket";
+                    document.getElementById('userName').innerText = "@" + user;
                 }, 2000);
 
             } catch (error) {
-                // Nếu lỗi (CORS chặn hoặc user sai), chuyển sang chế độ bảo trì chuyên nghiệp
-                setTimeout(() => {
-                    document.getElementById('loader').classList.add('hidden');
-                    msg.innerHTML = `
-                        <i class="fa-solid fa-circle-exclamation text-yellow-500 text-3xl mb-2"></i><br>
-                        <span class="text-white font-bold">LỖI KẾT NỐI API</span><br>
-                        Server đang quá tải hoặc ID không đúng.<br>
-                        Vui lòng nhắn tin trực tiếp để Admin kiểm tra!
-                    `;
-                    document.getElementById('zaloBtn').classList.remove('hidden');
-                    document.getElementById('zaloBtn').querySelector('span').innerText = "NHẤN ĐỂ KIỂM TRA LẠI QUA ZALO";
-                }, 2000);
+                // Nếu lỗi hoặc không tìm thấy, báo bảo trì để giữ uy tín
+                processText.innerHTML = `
+                    <i class="fa-solid fa-circle-xmark text-red-500 text-3xl mb-2"></i><br>
+                    ID không tồn tại hoặc lỗi Server.<br>
+                    <a href="https://zalo.me/0964121544" class="text-yellow-500 font-bold underline mt-2 block">Liên hệ Admin hỗ trợ</a>
+                `;
+                document.querySelector('.animate-spin').classList.add('hidden');
             }
         }
     </script>
